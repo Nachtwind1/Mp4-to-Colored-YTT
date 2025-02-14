@@ -81,7 +81,7 @@ if os.path.exists(args.file):
     for i in range(len(colorlist)):
         current_color = [round(x*colormul) for x in colorlist[i]]
         colorhex = convert_to_hex(current_color)
-        prefix += f'<pen id="{i}" sz="{100*float(scale)}" fc="{colorhex}" fo="255" bo="0" />\n'
+        prefix += f'<pen id="{i}" sz="{int(100*float(scale))}" fc="{colorhex}" fo="255" bo="0" />\n'
     prefix += '''</head>
 <body>'''
     writestring = prefix + "\n".join(srt) + '''</body></timedtext>'''
