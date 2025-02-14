@@ -8,8 +8,9 @@ from PIL import Image
 
 
 
-# 10 levels of grey
-gscale = ['||','!!','x','*','::','| ','! ',': ','..','. ','  ']
+gscale = ["J","n","--"]
+
+#gscale = ['||','!!','x','*','::','| ','! ',': ','..','. ','  '] # old don't use
 #gscale = ["$","8","o","b","d","p","q","0","L","u","n","1","+","'''"] # old don't use
 def id_to_time_format(id):
 
@@ -134,15 +135,15 @@ def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : l
     r_data = f'<p t="{int(start)}" d="{int(end)}" wp="1" ws="1">'
     c_data : list = []
     r=[]
+    colordiv = coloraccuracy * 15.875
     for rowi in range(len(aimg)-1):
         r = []
         done_charis = -1
-        colordiv = coloraccuracy * 15.875
         for chari in range(len(aimg[rowi])-1):
             if done_charis >= chari:
                 continue
             for chari2 in range(len(aimg[rowi])-chari):
-                if (abs(int(RGB[rowi][chari][0]/colordiv)-int(RGB[rowi][chari+chari2][0]/colordiv)) <= 5-Op_level) and (abs(int(RGB[rowi][chari][1]/colordiv)-int(RGB[rowi][chari2+chari][1]/colordiv)) <= 5-Op_level) and (abs(int(RGB[rowi][chari][2]/colordiv)-int(RGB[rowi][chari2+chari][2]/colordiv)) <= 5-Op_level):
+                if (abs(round(RGB[rowi][chari][0]/colordiv)-round(RGB[rowi][chari+chari2][0]/colordiv)) <= 5-Op_level) and (abs(round(RGB[rowi][chari][1]/colordiv)-round(RGB[rowi][chari2+chari][1]/colordiv)) <= 5-Op_level) and (abs(round(RGB[rowi][chari][2]/colordiv)-round(RGB[rowi][chari2+chari][2]/colordiv)) <= 5-Op_level):
                     c_data.append("0")
                 else:
                     break
@@ -156,20 +157,28 @@ def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : l
                 avgcolor_G += RGB[rowi][chari+colori][1]
                 avgcolor_B += RGB[rowi][chari+colori][2]
 
-            avgcolor_R = int(avgcolor_R/len(c_data)/colordiv)
-            avgcolor_G = int(avgcolor_G/len(c_data)/colordiv)
-            avgcolor_B = int(avgcolor_B/len(c_data)/colordiv)
+            avgcolor_R = (avgcolor_R/(len(c_data)*colordiv))
+            avgcolor_G = (avgcolor_G/(len(c_data)*colordiv))
+            avgcolor_B = (avgcolor_B/(len(c_data)*colordiv))
             
             
             if (not single_char_mode):
                 avgcolorlight = (avgcolor_R+avgcolor_G+avgcolor_B)/3
                 for chari3 in range(len(c_data)):
-                    chariavglight = (RGB[rowi][chari3+chari][0]+RGB[rowi][chari3+chari][1]+RGB[rowi][chari3+chari][2])/3
-                    difference = int((chariavglight-avgcolorlight)/colordiv)
-                    new_c_data.append(gscale[5-difference])
+                    chariavglight = ((RGB[rowi][chari3+chari][0]+RGB[rowi][chari3+chari][1]+RGB[rowi][chari3+chari][2])/3)
+                    difference = round((chariavglight-(avgcolorlight*colordiv))/colordiv)
+                    if (difference > 1):
+                        difference = 1
+                    if (difference < -1):
+                        difference = -1
+                        
+                    new_c_data.append(gscale[1-difference])
             else:
                  new_c_data = c_data
 
+            avgcolor_R = round(avgcolor_R)
+            avgcolor_G = round(avgcolor_G)
+            avgcolor_B = round(avgcolor_B)
 
             if [avgcolor_R,avgcolor_G,avgcolor_B] in colorlist:
                 r.append(colorlist.index([avgcolor_R, avgcolor_G, avgcolor_B]))
@@ -193,7 +202,7 @@ def convert(frame, frame_num, ms_per_frame, clms, submilisecondoffset,coloraccur
 	# set scale default as 0.65 which suits
 	# the Roboto Regular font
 	if single_char_mode:
-		scale = 1 * ScreenRatio
+		scale = 0.75 * ScreenRatio
 	else:
 		scale = 0.76 * ScreenRatio
 
