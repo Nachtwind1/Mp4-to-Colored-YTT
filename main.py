@@ -28,7 +28,7 @@ parser.add_argument('--single_char_mode', dest='scm', required=False)
 args = parser.parse_args()
 
 scale = float(args.scale or 1)
-scm = bool(args.scm or True)
+scm = args.scm or "true"
 fps = args.fps
 if fps:
     fps = float(fps)
@@ -63,7 +63,7 @@ if os.path.exists(args.file):
     print('Generating Ascii art')
     for x in range(total_frames):
         convert_to_png.print_progress_bar(x, total_frames-1)
-        srtf, colorlist = convert_to_ascii.convert(frames[x], x, ms_per_frame, args.collums, submilisecondoffset,args.coloraccuracy,colorlist,Op_Level,ScreenRatio, scm)
+        srtf, colorlist = convert_to_ascii.convert(frames[x], x, ms_per_frame, args.collums, submilisecondoffset,args.coloraccuracy,colorlist,Op_Level,ScreenRatio, scm.lower()=="true")
         srt.append(srtf)
 
     print()
