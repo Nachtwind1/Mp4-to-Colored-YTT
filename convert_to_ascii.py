@@ -12,10 +12,6 @@ gscale = ["J","n","--"]
 
 #gscale = ['||','!!','x','*','::','| ','! ',': ','..','. ','  '] # old don't use
 #gscale = ["$","8","o","b","d","p","q","0","L","u","n","1","+","'''"] # old don't use
-def id_to_time_format(id):
-
-    return int(id * 1.001)
-
 
 
 
@@ -103,7 +99,7 @@ def convertImageToAscii(frame, cols, scale):
             rgb_imgage = img.convert('RGB')
             Red, Green, Blue = rgb_imgage.split()
             
-            Red,Green,Blue = most_common_object(Red.getdata())[0],most_common_object(Green.getdata())[0],most_common_object(Blue.getdata())[0]
+            Red,Green,Blue = average(Red.getdata())[0],average(Green.getdata())[0],average(Blue.getdata())[0]
 
             
             RGB.append([(int)(Red),(int)(Green),(int)(Blue)])
@@ -130,6 +126,12 @@ def most_common_object(input_list):
     count = counts.most_common(1)[0][1]
     
     return most_common_item, count
+
+def average(input_list : list):
+    
+    vals : float = sum(input_list)
+    
+    return vals // len(input_list), len(input_list)
 
 def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : list,Op_level : int, single_char_mode : bool):
     r_data = f'<p t="{int(start)}" d="{int(end)}" wp="1" ws="1">'
