@@ -46,3 +46,4 @@ Issues with youtube:
   -can lag out if collums are set to high
 Issues with this tool:
   -code is almost unreadable and pretty unoptimized for speed
+  -the aspect Ratio not being right
