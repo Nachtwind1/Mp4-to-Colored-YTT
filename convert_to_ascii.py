@@ -171,7 +171,9 @@ def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : l
                     difference = round((chariavglight-avgcolorlight))
                     if (difference > 1):
                         difference = 1
-                    if (difference < -1):
+                    elif (difference < 0 & difference > -2):
+                         difference = 0
+                    elif (difference < -2):
                         difference = -1
                         
                     new_c_data.append(gscale[1-difference])
