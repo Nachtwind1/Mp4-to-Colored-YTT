@@ -39,3 +39,10 @@ example (this one works best with saturated colors):
 ```
 python main.py --file "video.mp4" --collums 32 --coloraccuracy 3 --op 4 --maxfps 5
 ```
+
+## known Issues
+Issues with youtube:
+  -doesn't load on mobile Devices
+  -can lag out if collums are set to high
+Issues with this tool:
+  -code is almost unreadable and pretty unoptimized for speed
