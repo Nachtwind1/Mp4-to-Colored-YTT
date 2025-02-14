@@ -1,3 +1,5 @@
+# Please Give Credit
+if you use this to make a video then please link to this in the comments or description, thanks!
 ## Requirements with their install commands
 
 ### CV2
