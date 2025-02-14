@@ -193,7 +193,7 @@ def convert(frame, frame_num, ms_per_frame, clms, submilisecondoffset,coloraccur
 	# set scale default as 0.65 which suits
 	# the Roboto Regular font
 	if single_char_mode:
-		scale = 0.5 * ScreenRatio
+		scale = 1 * ScreenRatio
 	else:
 		scale = 0.76 * ScreenRatio
 
