@@ -136,6 +136,8 @@ def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : l
     c_data : list = []
     r=[]
     colordiv = coloraccuracy * 15.875
+    if (colordiv == 0):
+        colordiv = 1
     for rowi in range(len(aimg)-1):
         r = []
         done_charis = -1
@@ -157,16 +159,16 @@ def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : l
                 avgcolor_G += RGB[rowi][chari+colori][1]
                 avgcolor_B += RGB[rowi][chari+colori][2]
 
-            avgcolor_R = (avgcolor_R/(len(c_data)*colordiv))
-            avgcolor_G = (avgcolor_G/(len(c_data)*colordiv))
-            avgcolor_B = (avgcolor_B/(len(c_data)*colordiv))
+            avgcolor_R = (avgcolor_R/(len(c_data)))
+            avgcolor_G = (avgcolor_G/(len(c_data)))
+            avgcolor_B = (avgcolor_B/(len(c_data)))
             
             
             if (not single_char_mode):
                 avgcolorlight = (avgcolor_R+avgcolor_G+avgcolor_B)/3
                 for chari3 in range(len(c_data)):
                     chariavglight = ((RGB[rowi][chari3+chari][0]+RGB[rowi][chari3+chari][1]+RGB[rowi][chari3+chari][2])/3)
-                    difference = round((chariavglight-(avgcolorlight*colordiv))/colordiv)
+                    difference = round((chariavglight-avgcolorlight))
                     if (difference > 1):
                         difference = 1
                     if (difference < -1):
@@ -176,9 +178,9 @@ def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : l
             else:
                  new_c_data = c_data
 
-            avgcolor_R = round(avgcolor_R)
-            avgcolor_G = round(avgcolor_G)
-            avgcolor_B = round(avgcolor_B)
+            avgcolor_R = round(avgcolor_R*coloraccuracy)
+            avgcolor_G = round(avgcolor_G*coloraccuracy)
+            avgcolor_B = round(avgcolor_B*coloraccuracy)
 
             if [avgcolor_R,avgcolor_G,avgcolor_B] in colorlist:
                 r.append(colorlist.index([avgcolor_R, avgcolor_G, avgcolor_B]))
