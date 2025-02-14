@@ -34,7 +34,7 @@ colorac = int(args.coloraccuracy)
 if fps:
     fps = float(fps)
 
-def convert_to_hex(rgb):
+def convert_to_hex(rgb:list):
     # Convert float values to integers
     rgb_int = [int(x) for x in rgb]
     
@@ -75,11 +75,12 @@ if os.path.exists(args.file):
 <ws id="0" ju="2" pd="0" sd="0" />
 <ws id="1" ju="2" pd="0" sd="0" />
 """
+    colormul = colorac*15.875
+    if (colormul == 0):
+        colormul = 1
     for i in range(len(colorlist)):
-        ccolor_R = round(colorlist[i][0]*colorac*15.875)
-        ccolor_G = round(colorlist[i][1]*colorac*15.875)
-        ccolor_B = round(colorlist[i][2]*colorac*15.875)
-        colorhex = convert_to_hex([int(ccolor_R),int(ccolor_G),int(ccolor_B)])
+        current_color = [round(x*colormul) for x in colorlist[i]]
+        colorhex = convert_to_hex(current_color)
         prefix += f'<pen id="{i}" sz="{100*float(scale)}" fc="{colorhex}" fo="255" bo="0" />\n'
     prefix += '''</head>
 <body>'''
