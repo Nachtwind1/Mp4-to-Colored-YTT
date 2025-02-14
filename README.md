@@ -33,7 +33,7 @@ Argument | Required | Description | Default |
 --maxfps | false | at how many fps the subtitles should run, set this to 5 if the video lags | same as file
 --single_char_mode | false | if the programm should use multiple characters or just one (0) | true
 
-example:
+example (this one works best with saturated colors):
 ```
-python main.py --file "video.mp4" --collums 32 --coloraccuracy 2 --scale 0.5
+python main.py --file "video.mp4" --collums 32 --coloraccuracy 3 --op 4 --maxfps 5
 ```
