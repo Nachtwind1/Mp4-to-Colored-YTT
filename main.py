@@ -13,7 +13,7 @@ parser.add_argument('--collums', dest='collums', required=True)
 parser.add_argument('--coloraccuracy', dest='coloraccuracy', required=True)
 '''how many different colors there are, 0 (all 8 bit colors) to 5 (either black or white)'''
 parser.add_argument('--op', dest='optimisation', required=False)
-'''optimization level, goes from 5 (no optimization) to 0 (as much optimization as possible) (default 2)'''
+'''optimization level, goes from 5 (no optimization) to 0 (as much optimization as possible) (default 3)'''
 parser.add_argument('--msoffset', dest='submsoffset', required=False)
 '''after how many milliseconds the subtitles start (default 0)'''
 parser.add_argument('--idoffset', dest='idoffset', required=False)
@@ -48,7 +48,7 @@ def convert_to_hex(rgb):
 idoffset = int(args.idoffset or 0)
 
 submilisecondoffset = int(args.submsoffset or 0)
-Op_Level = int(args.optimisation or 2)
+Op_Level = int(args.optimisation or 3)
 
 
 if os.path.exists(args.file):
