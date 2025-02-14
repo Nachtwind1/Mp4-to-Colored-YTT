@@ -178,9 +178,9 @@ def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : l
             else:
                  new_c_data = c_data
 
-            avgcolor_R = int(avgcolor_R*colordiv)
-            avgcolor_G = int(avgcolor_G*colordiv)
-            avgcolor_B = int(avgcolor_B*colordiv)
+            avgcolor_R = int(avgcolor_R/colordiv)
+            avgcolor_G = int(avgcolor_G/colordiv)
+            avgcolor_B = int(avgcolor_B/colordiv)
 
             if [avgcolor_R,avgcolor_G,avgcolor_B] in colorlist:
                 r.append(colorlist.index([avgcolor_R, avgcolor_G, avgcolor_B]))
