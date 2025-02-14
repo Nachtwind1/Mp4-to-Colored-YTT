@@ -30,6 +30,7 @@ args = parser.parse_args()
 scale = float(args.scale or 1)
 scm = args.scm or "true"
 fps = args.fps
+colorac = int(args.coloraccuracy)
 if fps:
     fps = float(fps)
 
@@ -62,8 +63,8 @@ if os.path.exists(args.file):
     srt = []
     print('Generating Ascii art')
     for x in range(total_frames):
-        convert_to_png.print_progress_bar(x, total_frames-1)
-        srtf, colorlist = convert_to_ascii.convert(frames[x], x, ms_per_frame, args.collums, submilisecondoffset,args.coloraccuracy,colorlist,Op_Level,ScreenRatio, scm.lower()=="true")
+        convert_to_png.print_progress_bar(x+1, total_frames)
+        srtf, colorlist = convert_to_ascii.convert(frames[x], x, ms_per_frame, args.collums, submilisecondoffset,colorac,colorlist,Op_Level,ScreenRatio, scm.lower()=="true")
         srt.append(srtf)
 
     print()
@@ -75,7 +76,7 @@ if os.path.exists(args.file):
 <ws id="1" ju="2" pd="0" sd="0" />
 """
     for i in range(len(colorlist)):
-        colorhex = convert_to_hex([int(colorlist[i][0]*Op_Level*15.875),int(colorlist[i][1]*Op_Level*15.875),int(colorlist[i][2]*Op_Level*15.875)])
+        colorhex = convert_to_hex([round(colorlist[i][0]*colorac*15.875),round(colorlist[i][1]*colorac*15.875),round(colorlist[i][2]*colorac*15.875)])
         prefix += f'<pen id="{i}" sz="{100*float(scale)}" fc="{colorhex}" fo="255" bo="0" />\n'
     prefix += '''</head>
 <body>'''
