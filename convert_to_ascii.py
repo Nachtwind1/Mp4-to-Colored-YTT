@@ -145,7 +145,7 @@ def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : l
             if done_charis >= chari:
                 continue
             for chari2 in range(len(aimg[rowi])-chari):
-                if (abs(round(RGB[rowi][chari][0]/colordiv)-round(RGB[rowi][chari+chari2][0]/colordiv)) <= 5-Op_level) and (abs(round(RGB[rowi][chari][1]/colordiv)-round(RGB[rowi][chari2+chari][1]/colordiv)) <= 5-Op_level) and (abs(round(RGB[rowi][chari][2]/colordiv)-round(RGB[rowi][chari2+chari][2]/colordiv)) <= 5-Op_level):
+                if (abs(int(RGB[rowi][chari][0]/colordiv)-int(RGB[rowi][chari+chari2][0]/colordiv)) <= 5-Op_level) and (abs(int(RGB[rowi][chari][1]/colordiv)-int(RGB[rowi][chari2+chari][1]/colordiv)) <= 5-Op_level) and (abs(int(RGB[rowi][chari][2]/colordiv)-int(RGB[rowi][chari2+chari][2]/colordiv)) <= 5-Op_level):
                     c_data.append("0")
                 else:
                     break
@@ -178,9 +178,9 @@ def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : l
             else:
                  new_c_data = c_data
 
-            avgcolor_R = round(avgcolor_R*coloraccuracy)
-            avgcolor_G = round(avgcolor_G*coloraccuracy)
-            avgcolor_B = round(avgcolor_B*coloraccuracy)
+            avgcolor_R = int(avgcolor_R*colordiv)
+            avgcolor_G = int(avgcolor_G*colordiv)
+            avgcolor_B = int(avgcolor_B*colordiv)
 
             if [avgcolor_R,avgcolor_G,avgcolor_B] in colorlist:
                 r.append(colorlist.index([avgcolor_R, avgcolor_G, avgcolor_B]))
