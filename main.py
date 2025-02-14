@@ -76,7 +76,10 @@ if os.path.exists(args.file):
 <ws id="1" ju="2" pd="0" sd="0" />
 """
     for i in range(len(colorlist)):
-        colorhex = convert_to_hex([round(colorlist[i][0]*colorac*15.875),round(colorlist[i][1]*colorac*15.875),round(colorlist[i][2]*colorac*15.875)])
+        ccolor_R = round(colorlist[i][0]*colorac*15.875)
+        ccolor_G = round(colorlist[i][1]*colorac*15.875)
+        ccolor_B = round(colorlist[i][2]*colorac*15.875)
+        colorhex = convert_to_hex([int(ccolor_R),int(ccolor_G),int(ccolor_B)])
         prefix += f'<pen id="{i}" sz="{100*float(scale)}" fc="{colorhex}" fo="255" bo="0" />\n'
     prefix += '''</head>
 <body>'''
