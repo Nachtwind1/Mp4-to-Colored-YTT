@@ -24,11 +24,14 @@ parser.add_argument('--maxfps', dest='fps', required=False)
 '''at how many fps the subtitles should run (default same as input file), set this to 5 if the video lags'''
 parser.add_argument('--single_char_mode', dest='scm', required=False)
 '''if the programm should use multiple characters or just one (0) (default true)'''
+parser.add_argument('--colorfix', dest='clf', required=False)
+'''apply a colorfix (default false)'''
 
 args = parser.parse_args()
 
 scale = float(args.scale or 1)
 scm = args.scm or "true"
+clf = args.clf or "false"
 fps = args.fps
 colorac = int(args.coloraccuracy)
 if fps:
@@ -64,7 +67,7 @@ if os.path.exists(args.file):
     print('Generating Ascii art')
     for x in range(total_frames):
         convert_to_png.print_progress_bar(x+1, total_frames)
-        srtf, colorlist = convert_to_ascii.convert(frames[x], x, ms_per_frame, args.collums, submilisecondoffset,colorac,colorlist,Op_Level,ScreenRatio, scm.lower()=="true")
+        srtf, colorlist = convert_to_ascii.convert(frames[x], x, ms_per_frame, args.collums, submilisecondoffset,colorac,colorlist,Op_Level,ScreenRatio, scm.lower()=="true",clf.lower()=="true")
         srt.append(srtf)
 
     print()
