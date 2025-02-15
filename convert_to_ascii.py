@@ -16,27 +16,13 @@ gscale = ["J","n","--"]
 
 
 
-def getAverageL(image):
-
-	"""
-	Given PIL Image, return average value of grayscale value
-	"""
-	# get image as numpy array
-	im = np.array(image)
-
-	# get shape
-	w,h = im.shape
-
-	# get average
-	return np.average(im.reshape(w*h))
-
 def getEqualWidthScale(scale, width):
     equal_width_scale = ""
     for char in scale:
         equal_width_scale += char + " " * (width - 1)
     return equal_width_scale
 
-def convertImageToAscii(frame, cols, scale):
+def convertImageToAscii(frame, cols, scale, colorfix : bool):
     """
     Given Image and dims (rows, cols) returns an m*n list of Images 
     """
@@ -98,9 +84,9 @@ def convertImageToAscii(frame, cols, scale):
 
             rgb_imgage = img.convert('RGB')
             Red, Green, Blue = rgb_imgage.split()
-            
+            colormul = 2 if colorfix else 1
             Red,Green,Blue = average(Red.getdata())[0],average(Green.getdata())[0],average(Blue.getdata())[0]
-
+            Red,Green,Blue = 255 if Red*colormul > 255 else Red*colormul, 255 if Green*colormul > 255 else Green*colormul, 255 if Blue*colormul > 255 else Blue*colormul
             
             RGB.append([(int)(Red),(int)(Green),(int)(Blue)])
             # append ascii char to array
@@ -133,11 +119,12 @@ def average(input_list : list):
     
     return vals // len(input_list), len(input_list)
 
-def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : list,Op_level : int, single_char_mode : bool):
+def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : list,Op_level : int, single_char_mode : bool, colorfix : bool):
     r_data = f'<p t="{int(start)}" d="{int(end)}" wp="1" ws="1">'
     c_data : list = []
     r=[]
     colordiv = coloraccuracy * 15.875
+    colormul = 2 if colorfix else 1
     if (colordiv == 0):
         colordiv = 1
     for rowi in range(len(aimg)-1):
@@ -147,7 +134,7 @@ def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : l
             if done_charis >= chari:
                 continue
             for chari2 in range(len(aimg[rowi])-chari):
-                if (abs(int(RGB[rowi][chari][0]/colordiv)-int(RGB[rowi][chari+chari2][0]/colordiv)) <= 5-Op_level) and (abs(int(RGB[rowi][chari][1]/colordiv)-int(RGB[rowi][chari2+chari][1]/colordiv)) <= 5-Op_level) and (abs(int(RGB[rowi][chari][2]/colordiv)-int(RGB[rowi][chari2+chari][2]/colordiv)) <= 5-Op_level):
+                if (abs(int(RGB[rowi][chari][0]/colordiv)-int(RGB[rowi][chari+chari2][0]/colordiv)) <= (5-Op_level)*colormul) and (abs(int(RGB[rowi][chari][1]/colordiv)-int(RGB[rowi][chari2+chari][1]/colordiv)) <= (5-Op_level)*colormul) and (abs(int(RGB[rowi][chari][2]/colordiv)-int(RGB[rowi][chari2+chari][2]/colordiv)) <= (5-Op_level)*colormul):
                     c_data.append("0")
                 else:
                     break
@@ -202,7 +189,7 @@ def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : l
     return r_data, colorlist
 
 # main() function
-def convert(frame, frame_num, ms_per_frame, clms, submilisecondoffset,coloraccuracy,colorlist, Op_Level, ScreenRatio, single_char_mode:bool):
+def convert(frame, frame_num, ms_per_frame, clms, submilisecondoffset,coloraccuracy,colorlist, Op_Level, ScreenRatio, single_char_mode:bool, colorfix : bool):
 	rtn = []
 
 	# set scale default as 0.65 which suits
@@ -218,9 +205,9 @@ def convert(frame, frame_num, ms_per_frame, clms, submilisecondoffset,coloraccur
 		print("No collums inputed")
 
 	# convert image to ascii txt
-	aimg, RGB, rowh = convertImageToAscii(frame, cols, scale)
+	aimg, RGB, rowh = convertImageToAscii(frame, cols, scale, colorfix)
     
 	ms_pos = frame_num * ms_per_frame
-	return convert_data_to_ytt(ms_pos + submilisecondoffset, ms_per_frame,aimg,RGB,rowh,(int)(coloraccuracy),colorlist, Op_Level, single_char_mode)
+	return convert_data_to_ytt(ms_pos + submilisecondoffset, ms_per_frame,aimg,RGB,rowh,(int)(coloraccuracy),colorlist, Op_Level, single_char_mode, colorfix)
 
 
