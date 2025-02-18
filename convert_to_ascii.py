@@ -120,7 +120,7 @@ def average(input_list : list):
     return vals // len(input_list), len(input_list)
 
 def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : list,Op_level : int, single_char_mode : bool, colorfix : bool):
-    r_data = f'<p t="{int(start)}" d="{int(end)}" wp="1" ws="1">'
+    r_data = [f'<p t="{int(start)}" d="{int(end)}" wp="1" ws="1">']
     c_data : list = []
     r=[]
     colordiv = coloraccuracy * 15.875
@@ -180,34 +180,36 @@ def convert_data_to_ytt(start,end,aimg,RGB,rowheight,coloraccuracy,colorlist : l
                 r.append(len(colorlist)-1)
             
 
-            r_data += f'<s p="1"></s><s p="{(int)(r[0])}">{"".join(new_c_data)}</s>'
+            r_data.append(f'<s p="1"></s><s p="{(int)(r[0])}">{"".join(new_c_data)}</s>')
             done_charis = chari+(len(c_data)-1)
             c_data = []
             r = []
-        r_data += "\n"
-    r_data += '<s p="1"></s></p>\n'
-    return r_data, colorlist
+        r_data.append("\n")
+    r_data.append('<s p="1"></s></p>\n')
+    return "".join(r_data), colorlist
 
 # main() function
-def convert(frame, frame_num, ms_per_frame, clms, submilisecondoffset,coloraccuracy,colorlist, Op_Level, ScreenRatio, single_char_mode:bool, colorfix : bool):
-	rtn = []
+def convert(frame, frame_num, ms_per_frame, clms, submilisecondoffset,coloraccuracy,colorlist, Op_Level, ScreenRatio, single_char_mode:bool, colorfix : bool, rfx : bool):
+    rtn = []
 
-	# set scale default as 0.65 which suits
-	# the Roboto Regular font
-	if single_char_mode:
-		scale = 0.75 * ScreenRatio
-	else:
-		scale = 0.76 * ScreenRatio
+    # set scale default as 0.65 which suits
+    # the Roboto Regular font
+    if rfx:
+        if single_char_mode:
+            scale = 0.47 * ScreenRatio
+        else:
+            scale = 0.46 * ScreenRatio
+    else:
+        scale = ScreenRatio
+    if clms:
+        cols = int(clms)
+    else:
+        print("No collums inputed")
 
-	if clms:
-		cols = int(clms)
-	else:
-		print("No collums inputed")
-
-	# convert image to ascii txt
-	aimg, RGB, rowh = convertImageToAscii(frame, cols, scale, colorfix)
+    # convert image to ascii txt
+    aimg, RGB, rowh = convertImageToAscii(frame, cols, scale, colorfix)
     
-	ms_pos = frame_num * ms_per_frame
-	return convert_data_to_ytt(ms_pos + submilisecondoffset, ms_per_frame,aimg,RGB,rowh,(int)(coloraccuracy),colorlist, Op_Level, single_char_mode, colorfix)
+    ms_pos = frame_num * ms_per_frame
+    return convert_data_to_ytt(ms_pos + submilisecondoffset, ms_per_frame,aimg,RGB,rowh,(int)(coloraccuracy),colorlist, Op_Level, single_char_mode, colorfix)
 
 
