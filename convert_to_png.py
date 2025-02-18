@@ -45,7 +45,7 @@ def convert(vidfile, startms=0, idoffset=0, optional_fps=None):
 
         f = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         if not frames:
-            ScreenR = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB).shape[0] / cv2.cvtColor(frame, cv2.COLOR_BGR2RGB).shape[1]
+            ScreenR = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB).shape[1] /cv2.cvtColor(frame, cv2.COLOR_BGR2RGB).shape[0] 
         frames.append(f)
     print()
 
