@@ -26,12 +26,16 @@ parser.add_argument('--single_char_mode', dest='scm', required=False)
 '''if the programm should use multiple characters or just one (0) (default true)'''
 parser.add_argument('--colorfix', dest='clf', required=False)
 '''apply a colorfix (default false)'''
+parser.add_argument('--ratiofix', dest='rfx', required=False)
+'''apply a fix for the video ratio (default true)'''
+
 
 args = parser.parse_args()
 
 scale = float(args.scale or 1)
 scm = args.scm or "true"
 clf = args.clf or "false"
+rfx = args.rfx or "true"
 fps = args.fps
 colorac = int(args.coloraccuracy)
 if fps:
@@ -67,7 +71,7 @@ if os.path.exists(args.file):
     print('Generating Ascii art')
     for x in range(total_frames):
         convert_to_png.print_progress_bar(x+1, total_frames)
-        srtf, colorlist = convert_to_ascii.convert(frames[x], x, ms_per_frame, args.collums, submilisecondoffset,colorac,colorlist,Op_Level,ScreenRatio, scm.lower()=="true",clf.lower()=="true")
+        srtf, colorlist = convert_to_ascii.convert(frames[x], x, ms_per_frame, args.collums, submilisecondoffset,colorac,colorlist,Op_Level,ScreenRatio, scm.lower()=="true",clf.lower()=="true",rfx=="true")
         srt.append(srtf)
 
     print()
